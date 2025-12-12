@@ -28,7 +28,15 @@ void Sistema::crear_nodo(int id_padre) {
 	indice_bplus.insertar(nuevo_id, nuevo_nodo);
 }
 
-void Sistema::eliminar_archivo(int, int) {}
+void Sistema::eliminar_archivo(int id_archivo, int id_directorio_padre) {
+	NodoGrafo* nodo_padre = indice_bplus.buscar(id_directorio_padre);
+	if (nodo_padre == 0) {
+		return;
+	}
+	NodoDirectorio* directorio_padre = (NodoDirectorio*)nodo_padre;
+	directorio_padre->quitar_hijo(id_archivo);
+	indice_bplus.eliminar(id_archivo);
+}
 
 int* Sistema::listar_contenido(int) { return 0; }
 
