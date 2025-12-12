@@ -1,5 +1,5 @@
 #include <iostream>
-#include "Sistema.h"
+#include "sys/Sistema.h"
 
 int main() {
     Sistema sistema;
