@@ -80,6 +80,7 @@ void opcion_insertar_archivo(Sistema& sistema) {
     sistema.insertar_nodo_grafo(id_archivo, arch);
 
     ((NodoDirectorio*)p)->agregar_hijo(id_archivo);
+    arch->agregar_padre(id_padre);
     cout << "Archivo insertado" << endl;
 }
 
@@ -132,15 +133,47 @@ void opcion_eliminar_archivo(Sistema& sistema) {
 }
 
 void opcion_listar_contenido(Sistema& sistema) {
-    cout << "[Pendiente] Listar contenido de directorio" << endl;
+    cout << "ID del directorio: ";
+    int id_dir;
+    if (!(cin >> id_dir)) {
+        cin.clear();
+        cin.ignore(10000, '\n');
+        cout << "Entrada invalida" << endl;
+        return;
+    }
+
+    NodoGrafo* n = sistema.buscar_nodo_grafo(id_dir);
+    if (n == 0) {
+        cout << "Directorio no encontrado" << endl;
+        return;
+    }
+
+    NodoDirectorio* d = (NodoDirectorio*)n;
+    int cantidad = d->cantidad_hijos();
+    if (cantidad <= 0) {
+        cout << "Sin hijos" << endl;
+        return;
+    }
+
+    int* hijos = sistema.listar_contenido(id_dir);
+    if (hijos == 0) {
+        cout << "Sin hijos" << endl;
+        return;
+    }
+
+    cout << "Hijos (" << cantidad << "):" << endl;
+    for (int i = 0; i < cantidad; ++i) {
+        cout << "- " << hijos[i] << endl;
+    }
+    delete[] hijos;
 }
 
 void opcion_obtener_rutas(Sistema& sistema) {
-    cout << "[Pendiente] Obtener rutas completas de archivo" << endl;
+    cout << "Obtener rutas completas de archivo" << endl;
 }
 
 void opcion_calcular_espacio(Sistema& sistema) {
-    cout << "[Pendiente] Calcular espacio ocupado del directorio" << endl;
+    cout << "Calcular espacio ocupado del directorio" << endl;
 }
 
 int main() {
@@ -158,9 +191,9 @@ int main() {
         cout << "2) Insertar archivo" << endl;
         cout << "3) Buscar nodo por ID" << endl;
         cout << "4) Eliminar archivo" << endl;
-        cout << "5) Listar contenido (pendiente)" << endl;
-        cout << "6) Obtener rutas (pendiente)" << endl;
-        cout << "7) Calcular espacio (pendiente)" << endl;
+        cout << "5) Listar contenido" << endl;
+        cout << "6) Obtener rutas" << endl;
+        cout << "7) Calcular espacio" << endl;
         cout << "8) Salir" << endl;
         cout << "Opcion: ";
 
