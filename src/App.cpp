@@ -6,38 +6,31 @@
 #include "bplus/ArbolB.h"
 #include "grafo/NodoArchivo.h"
 #include "grafo/NodoDirectorio.h"
+#include "grafo/NodoGrafo.h"
+
+using namespace std;
 
 int main() {
     Sistema sistema;
-    std::cout << "Sistema de archivos inicializado" << std::endl;
+    cout << "Sistema de archivos inicializado" << endl;
 
-    ArbolB arbol;
+    NodoDirectorio* dir = new NodoDirectorio();
+    dir->establecer_id(1);
 
-    NodoDirectorio* directorio_raiz = new NodoDirectorio();
-    directorio_raiz->establecer_id(100);
+    cout << "Es directorio: " << (dir->es_directorio() ? "si" : "no") << endl;
 
-    NodoArchivo* archivo1 = new NodoArchivo(1024, 1);
-    archivo1->establecer_id(10);
+    cout << "Hijos iniciales: " << dir->cantidad_hijos() << endl;
+    dir->agregar_hijo(10);
+    dir->agregar_hijo(20);
+    cout << "Hijos tras agregar: " << dir->cantidad_hijos() << endl;
+    int* hijos = dir->lista_hijos();
+    cout << "Listado hijos: " << hijos[0] << ", " << hijos[1] << endl;
 
-    NodoArchivo* archivo2 = new NodoArchivo(2048, 1);
-    archivo2->establecer_id(20);
+    dir->quitar_hijo(10);
+    cout << "Hijos tras quitar 10: " << dir->cantidad_hijos() << endl;
+    if (dir->cantidad_hijos() > 0) cout << "Primer hijo: " << dir->lista_hijos()[0] << endl;
 
-    arbol.insertar(directorio_raiz->obtener_id(), directorio_raiz);
-    arbol.insertar(archivo1->obtener_id(), archivo1);
-    arbol.insertar(archivo2->obtener_id(), archivo2);
+    delete dir;
 
-    std::cout << "Accesos B+: " << arbol.obtener_accesos() << std::endl;
-
-    std::cout << "Buscar 10: " << (arbol.buscar(10) ? "ok" : "no") << std::endl;
-    std::cout << "Buscar 20: " << (arbol.buscar(20) ? "ok" : "no") << std::endl;
-    std::cout << "Buscar 99: " << (arbol.buscar(99) ? "ok" : "no") << std::endl;
-
-    std::cout << "Eliminar 10: " << (arbol.eliminar(10) ? "ok" : "no") << std::endl;
-    std::cout << "Re-buscar 10: " << (arbol.buscar(10) ? "ok" : "no") << std::endl;
-    std::cout << "Accesos B+ totales: " << arbol.obtener_accesos() << std::endl;
-
-    delete directorio_raiz;
-    delete archivo1;
-    delete archivo2;
     return 0;
 }
