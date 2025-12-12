@@ -17,4 +17,6 @@ public:
     int* listar_contenido(int id_directorio);
     char** obtener_rutas_completas(int id_archivo);
     int calcular_espacio_ocupado(int id_directorio);
+private:
+    ArbolB indice_bplus;
 };
