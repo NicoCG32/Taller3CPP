@@ -1,9 +1,9 @@
 #pragma once
-#include "NodoGrafo.h"
+#include "grafo/NodoGrafo.h"
 
 class NodoArchivo : public NodoGrafo {
 private:
-    int tamaño;
+    int tamano;
     int tipo; // 0: Imagen; 1: Documento; 2: ejecutable; 3: Video; 4: Comprimido
 
 public:

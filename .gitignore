@@ -1,9 +1,3 @@
-build/
-.vscode/
-*.exe
-*.obj
-*.pdb
-*.log
 ### C++ ###
 # Compiled Object files
 *.o

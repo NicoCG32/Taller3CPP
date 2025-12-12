@@ -1,4 +1,4 @@
-#include "sys/Sistema.h"
+#include "Sistema.h"
 
 void Sistema::insertar_nodo_grafo(int clave, NodoGrafo* nodo_grafo) {
 }

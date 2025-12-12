@@ -14,9 +14,9 @@ public:
     // Devuelve el numero de accesos simulados al B+
     int obtener_accesos() const;
     // Nota: Estas funciones requieren la estructura y lógica de un Árbol B+.
-    // En particular:
-    // - Descenso por nodos internos usando las claves para seleccionar punteros.
-    // - Inserción ordenada en hojas y manejo de overflow mediante split.
-    // - Promoción de claves hacia nodos internos y posibles splits recursivos.
-    // - Uso de la lista enlazada de hojas para recorridos secuenciales.
+    /* En particular:
+    - Descenso por nodos internos usando las claves para seleccionar punteros.
+    - Inserción ordenada en hojas y manejo de overflow mediante split.
+    - Promoción de claves hacia nodos internos y posibles splits recursivos.
+    - Uso de la lista enlazada de hojas para recorridos secuenciales. */
 };
