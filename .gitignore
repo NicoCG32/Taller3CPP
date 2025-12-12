@@ -1,0 +1,40 @@
+### C++ ###
+# Compiled Object files
+*.o
+*.obj
+
+# Executables
+*.exe
+*.out
+*.app
+
+# Build directory
+build/
+bin/
+obj/
+
+# Visual Studio Code
+.vscode/settings.json
+.vscode/launch.json
+.vscode/tasks.json
+
+# Compiler output
+*.d
+*.a
+*.lib
+*.dll
+*.so
+*.dylib
+
+# Debug files
+*.pdb
+*.ilk
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
