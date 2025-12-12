@@ -1,5 +1,6 @@
 #pragma once
 
+#include "grafo/Grafo.h"
 #include "grafo/NodoGrafo.h"
 #include "grafo/NodoDirectorio.h"
 #include "grafo/NodoArchivo.h"
