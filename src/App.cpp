@@ -169,7 +169,7 @@ void opcion_listar_contenido(Sistema& sistema) {
 }
 
 void opcion_obtener_rutas(Sistema& sistema) {
-    cout << "ID del archivo: ";
+    cout << "ID del archivo (DFS iterativo): ";
     int id_archivo;
     if (!(cin >> id_archivo)) {
         cin.clear();
@@ -194,7 +194,7 @@ void opcion_obtener_rutas(Sistema& sistema) {
         return;
     }
 
-    cout << "Rutas completas:" << endl;
+    cout << "Rutas completas (DFS):" << endl;
     for (int i = 0; rutas[i] != 0; ++i) {
         cout << "- " << rutas[i] << endl;
         delete[] rutas[i];
@@ -203,7 +203,7 @@ void opcion_obtener_rutas(Sistema& sistema) {
 }
 
 void opcion_calcular_espacio(Sistema& sistema) {
-    cout << "ID del directorio: ";
+    cout << "ID del directorio (BFS): ";
     int id_dir;
     if (!(cin >> id_dir)) {
         cin.clear();
@@ -223,7 +223,7 @@ void opcion_calcular_espacio(Sistema& sistema) {
     }
 
     int total = sistema.calcular_espacio_ocupado(id_dir);
-    cout << "Espacio total: " << total << endl;
+    cout << "Espacio total (BFS): " << total << endl;
 }
 
 int main() {

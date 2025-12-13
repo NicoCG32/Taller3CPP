@@ -7,6 +7,10 @@ NodoGrafo::NodoGrafo(int _id) : id(_id), padres(0), num_padres(0) {
 }
 
 NodoGrafo::~NodoGrafo() {
+	if (padres != 0) {
+		delete[] padres; // Corregido: Fuga de memoria - array padres no se liberaba
+		padres = 0;
+	}
 }
 
 int NodoGrafo::obtener_id() const {

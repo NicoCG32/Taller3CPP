@@ -1,80 +1,109 @@
 #include "Sistema.h"
-#include <cstdio>
 #include <cstring>
 
-static void construir_rutas_recursivo(Sistema* sistema,
-									   int id_actual,
-									   int* pila_ids,
-									   int profundidad,
-									   char** rutas,
-									   int* contador_rutas,
-									   int max_rutas) {
-	NodoGrafo* nodo = sistema->buscar_nodo_grafo(id_actual);
-	if (nodo == 0) {
+static int contador_id_global = 1000; // Corregido: Evita colisiones de IDs - antes usaba id_padre + cantidad que generaba duplicados
+
+struct EstadoDFS { int id; int profundidad; int camino[64]; };
+
+static void escribir_id(char* buffer, int* pos, int valor) {
+	int temp[12];
+	int len = 0;
+	if (valor == 0) {
+		if (*pos < 255) { buffer[*pos] = '0'; *pos += 1; }
 		return;
 	}
-
-	pila_ids[profundidad] = id_actual;
-
-	int cantidad_padres = nodo->cantidad_padres();
-	int* padres = nodo->lista_padres();
-
-	if (cantidad_padres == 0) {
-		if (*contador_rutas >= max_rutas) {
-			return;
-		}
-		char buffer[256];
-		int pos = 0;
-		for (int i = profundidad; i >= 0; --i) {
-			int escrito = std::snprintf(buffer + pos, 256 - pos, "/%d", pila_ids[i]);
-			if (escrito < 0) {
-				break;
-			}
-			pos += escrito;
-			if (pos >= 255) {
-				break;
-			}
-		}
-		buffer[255] = '\0';
-
-		char* ruta = new char[256];
-		std::strncpy(ruta, buffer, 256);
-		ruta[255] = '\0';
-
-		rutas[*contador_rutas] = ruta;
-		*contador_rutas = *contador_rutas + 1;
-		return;
-	}
-
-	for (int i = 0; i < cantidad_padres; ++i) {
-		construir_rutas_recursivo(sistema,
-								   padres[i],
-								   pila_ids,
-								   profundidad + 1,
-								   rutas,
-								   contador_rutas,
-								   max_rutas);
+	while (valor > 0 && len < 12) { temp[len] = valor % 10; valor /= 10; len++; }
+	for (int i = len - 1; i >= 0; --i) {
+		if (*pos < 255) { buffer[*pos] = char('0' + temp[i]); *pos += 1; }
 	}
 }
 
-static int sumar_espacio_recursivo(Sistema* sistema, int id_dir) {
-	NodoGrafo* nodo = sistema->buscar_nodo_grafo(id_dir);
-	if (nodo == 0) {
-		return 0;
+static void construir_rutas_con_stack(Sistema* sistema, int id_inicio, char** rutas, int* contador_rutas, int max_rutas) {
+	Stack<EstadoDFS*> pila;
+	EstadoDFS* inicio = new EstadoDFS;
+	inicio->id = id_inicio;
+	inicio->profundidad = 0;
+	inicio->camino[0] = id_inicio;
+	Nodo<EstadoDFS*>* nodo_ini = new Nodo<EstadoDFS*>(inicio);
+	pila.push(nodo_ini);
+
+	while (!pila.empty()) {
+		Nodo<EstadoDFS*>* nodo_pila = pila.pop();
+		EstadoDFS* estado = nodo_pila->dato;
+		delete nodo_pila;
+
+		NodoGrafo* nodo = sistema->buscar_nodo_grafo(estado->id);
+		if (nodo == 0) { delete estado; continue; }
+
+		int cantidad_padres = nodo->cantidad_padres();
+		int* padres = nodo->lista_padres();
+
+		if (cantidad_padres == 0) {
+			if (*contador_rutas < max_rutas) {
+				char buffer[256];
+				int pos = 0;
+				for (int i = estado->profundidad; i >= 0 && pos < 255; --i) {
+					if (pos < 255) { buffer[pos] = '/'; pos++; }
+					escribir_id(buffer, &pos, estado->camino[i]);
+				}
+				if (pos >= 256) pos = 255;
+				buffer[pos] = '\0';
+				char* ruta = new char[256];
+				int k = 0;
+				while (buffer[k] != '\0' && k < 255) { ruta[k] = buffer[k]; k++; }
+				ruta[k] = '\0';
+				rutas[*contador_rutas] = ruta;
+				(*contador_rutas)++;
+			}
+			delete estado;
+			continue;
+		}
+
+		for (int i = 0; i < cantidad_padres; ++i) {
+			EstadoDFS* nuevo = new EstadoDFS;
+			nuevo->id = padres[i];
+			nuevo->profundidad = estado->profundidad + 1;
+			for (int j = 0; j <= estado->profundidad; ++j) {
+				nuevo->camino[j] = estado->camino[j];
+			}
+			nuevo->camino[nuevo->profundidad] = padres[i];
+			Nodo<EstadoDFS*>* nodo_nuevo = new Nodo<EstadoDFS*>(nuevo);
+			pila.push(nodo_nuevo);
+		}
+
+		delete estado;
 	}
-	if (!nodo->es_directorio()) {
-		NodoArchivo* archivo = (NodoArchivo*)nodo;
-		int tam = archivo->obtener_tamano();
-		return tam;
+}
+
+static int sumar_espacio_bfs(Sistema* sistema, int id_dir) {
+	Queue<int>* cola = new Queue<int>();
+	Nodo<int>* inicio = new Nodo<int>(id_dir);
+	cola->push(inicio);
+	int total = 0;
+
+	while (!cola->empty()) {
+		Nodo<int>* actual = cola->pop();
+		int id = actual->dato;
+		delete actual;
+
+		NodoGrafo* nodo = sistema->buscar_nodo_grafo(id);
+		if (nodo == 0) { continue; }
+		if (!nodo->es_directorio()) {
+			NodoArchivo* archivo = (NodoArchivo*)nodo;
+			total += archivo->obtener_tamano();
+			continue;
+		}
+
+		NodoDirectorio* dir = (NodoDirectorio*)nodo;
+		int cantidad = dir->cantidad_hijos();
+		int* hijos = dir->lista_hijos();
+		for (int i = 0; i < cantidad; ++i) {
+			Nodo<int>* nuevo = new Nodo<int>(hijos[i]);
+			cola->push(nuevo);
+		}
 	}
 
-	NodoDirectorio* dir = (NodoDirectorio*)nodo;
-	int total = 0;
-	int cantidad = dir->cantidad_hijos();
-	int* hijos = dir->lista_hijos();
-	for (int i = 0; i < cantidad; ++i) {
-		total += sumar_espacio_recursivo(sistema, hijos[i]);
-	}
+	delete cola;
 	return total;
 }
 
@@ -100,8 +129,7 @@ void Sistema::crear_nodo(int id_padre) {
 	}
 
 	NodoDirectorio* directorio_padre = (NodoDirectorio*)nodo_padre;
-	int cantidad = directorio_padre->cantidad_hijos();
-	int nuevo_id = id_padre + cantidad + 1;
+	int nuevo_id = contador_id_global++; // Corregido: ID único global en vez de id_padre + cantidad
 
 	NodoDirectorio* nuevo_nodo = new NodoDirectorio();
 	nuevo_nodo->establecer_id(nuevo_id);
@@ -166,9 +194,8 @@ char** Sistema::obtener_rutas_completas(int d) {
 	for (int i = 0; i < max_rutas + 1; ++i) {
 		rutas[i] = 0;
 	}
-	int pila_ids[64];
 	int contador = 0;
-	construir_rutas_recursivo(this, d, pila_ids, 0, rutas, &contador, max_rutas);
+	construir_rutas_con_stack(this, d, rutas, &contador, max_rutas);
 	rutas[contador] = 0;
 	return rutas;
 }
@@ -183,6 +210,6 @@ int Sistema::calcular_espacio_ocupado(int d) {
 		int tam = archivo->obtener_tamano();
 		return tam;
 	}
-	int total = sumar_espacio_recursivo(this, d);
+	int total = sumar_espacio_bfs(this, d);
 	return total;
 }
