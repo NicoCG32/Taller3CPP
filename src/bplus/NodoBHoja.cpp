@@ -10,7 +10,10 @@ NodoBHoja::NodoBHoja(int _orden) : NodoBPlusBase(_orden, true), datos(0), siguie
 }
 
 NodoBHoja::~NodoBHoja() {
-	delete[] datos;
+	if (datos != 0) { // Seguridad: verificar antes de liberar
+		delete[] datos;
+		datos = 0;
+	}
 }
 
 void NodoBHoja::establecer_dato(int idx, NodoGrafo* g) {

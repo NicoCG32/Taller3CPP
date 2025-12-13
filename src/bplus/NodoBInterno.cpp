@@ -17,7 +17,10 @@ NodoBInterno::NodoBInterno(int _orden) : NodoBPlusBase(_orden, false), punteros(
 }
 
 NodoBInterno::~NodoBInterno() {
-    delete[] punteros;
+    if (punteros != 0) { // Seguridad: verificar antes de liberar
+        delete[] punteros;
+        punteros = 0;
+    }
 }
 
 void NodoBInterno::establecer_puntero(int idx, NodoBPlusBase* nodo) {

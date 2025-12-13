@@ -35,6 +35,13 @@ obj/
 *.temp
 *.log
 
+# Doxygen documentation
+docs/html/
+docs/latex/
+docs/man/
+docs/rtf/
+docs/xml/
+
 # OS files
 .DS_Store
 Thumbs.db

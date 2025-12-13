@@ -3,8 +3,6 @@
 
 static int contador_id_global = 1000; // Corregido: Evita colisiones de IDs - antes usaba id_padre + cantidad que generaba duplicados
 
-struct EstadoDFS { int id; int profundidad; int camino[64]; };
-
 static void escribir_id(char* buffer, int* pos, int valor) {
 	int temp[12];
 	int len = 0;
@@ -174,6 +172,9 @@ int* Sistema::listar_contenido(int id_directorio) {
 		return 0;
 	}
 	int* origen = dir->lista_hijos();
+	if (origen == 0) { // Seguridad: verificar pointer nulo antes de copiar
+		return 0;
+	}
 	int* copia = new int[cantidad];
 	for (int i = 0; i < cantidad; ++i) {
 		int id_hijo = origen[i];

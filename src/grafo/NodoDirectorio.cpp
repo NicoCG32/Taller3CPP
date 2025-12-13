@@ -14,11 +14,13 @@ int NodoDirectorio::cantidad_hijos() const {
 
 void NodoDirectorio::agregar_hijo(int id_hijo) {
     int* nuevo = new int[num_hijos + 1];
-    for (int i = 0; i < num_hijos; ++i) {
-        nuevo[i] = hijos[i];
+    if (hijos != 0) { // Evitar copiar desde puntero nulo
+        for (int i = 0; i < num_hijos; ++i) {
+            nuevo[i] = hijos[i];
+        }
+        delete[] hijos;
     }
     nuevo[num_hijos] = id_hijo;
-    delete[] hijos;
     hijos = nuevo;
     num_hijos += 1;
 }

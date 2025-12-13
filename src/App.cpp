@@ -1,4 +1,5 @@
 #include <iostream>
+#include "App.h"
 #include "Sistema.h"
 #include "auxiliar/Stack.h"
 #include "auxiliar/Queue.h"

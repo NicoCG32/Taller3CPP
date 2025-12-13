@@ -1,0 +1,122 @@
+# ============================================================================
+# Identidad del proyecto
+# ============================================================================
+PROJECT_NAME           = "Taller3CPP"
+PROJECT_BRIEF          = "Sistema de archivos con grafo y árbol B+ en C++17"
+PROJECT_NUMBER         = "v1.0"
+PROJECT_LOGO           = 
+
+# ============================================================================
+# Entrada y salida
+# ============================================================================
+OUTPUT_DIRECTORY       = .
+INPUT                  = ../include ../src
+RECURSIVE              = YES
+FILE_PATTERNS          = *.h *.hpp *.cpp *.c
+EXCLUDE_PATTERNS       = */build/* */.git/*
+USE_MDFILE_AS_MAINPAGE = 
+
+# ============================================================================
+# Alcance de extracción de documentación
+# ============================================================================
+EXTRACT_ALL            = YES
+EXTRACT_PRIVATE        = YES
+EXTRACT_STATIC         = YES
+EXTRACT_LOCAL_CLASSES  = YES
+EXTRACT_ANON_NSPACES   = NO
+
+# ============================================================================
+# Procesamiento de fuente
+# ============================================================================
+SOURCE_BROWSER         = YES
+STRIP_CODE_COMMENTS    = NO
+REFERENCED_BY_RELATION = YES
+REFERENCES_RELATION    = YES
+
+# ============================================================================
+# Mensajes y advertencias
+# ============================================================================
+WARN_IF_UNDOCUMENTED   = YES
+WARN_IF_DOC_ENDS_IN_NESTED_COMMAND = NO
+WARNINGS               = YES
+QUIET                  = NO
+
+# ============================================================================
+# Formato de salida HTML
+# ============================================================================
+GENERATE_HTML          = YES
+HTML_OUTPUT            = html
+HTML_FILE_EXTENSION    = .html
+HTML_HEADER            = 
+HTML_FOOTER            = 
+HTML_STYLESHEET        = 
+GENERATE_HTMLHELP      = NO
+
+# ============================================================================
+# Formato de salida LaTeX
+# ============================================================================
+GENERATE_LATEX         = NO
+LATEX_OUTPUT           = latex
+
+# ============================================================================
+# Formato RTF
+# ============================================================================
+GENERATE_RTF           = NO
+
+# ============================================================================
+# Formato Man
+# ============================================================================
+GENERATE_MAN           = NO
+
+# ============================================================================
+# Formato XML
+# ============================================================================
+GENERATE_XML           = NO
+
+# ============================================================================
+# Búsqueda
+# ============================================================================
+SEARCHENGINE           = NO
+
+# ============================================================================
+# Configuración de Javadoc
+# ============================================================================
+JAVADOC_AUTOBRIEF      = YES
+QT_AUTOBRIEF           = YES
+
+# ============================================================================
+# Diagramas con Graphviz
+# ============================================================================
+HAVE_DOT               = NO
+DOT_IMAGE_FORMAT       = svg
+DOT_PATH               = 
+CLASS_GRAPH            = YES
+COLLABORATION_GRAPH    = YES
+GROUP_GRAPHS           = YES
+UML_LOOK               = NO
+TEMPLATE_RELATIONS     = YES
+INCLUDE_GRAPH          = YES
+INCLUDED_BY_GRAPH      = YES
+CALL_GRAPH             = NO
+CALLER_GRAPH           = NO
+GRAPHICAL_HIERARCHY    = YES
+DIRECTORY_GRAPH        = YES
+DOT_TRANSPARENT        = NO
+DOT_FONTNAME           = Helvetica
+DOT_FONTSIZE           = 10
+MAX_DOT_GRAPH_DEPTH    = 0
+DOT_CLEANUP            = YES
+
+# ============================================================================
+# Índices
+# ============================================================================
+DISABLE_INDEX          = NO
+GENERATE_TREEVIEW      = YES
+TREEVIEW_WIDTH         = 250
+EXT_LINKS_IN_WINDOW    = NO
+
+# ============================================================================
+# Internacionalización
+# ============================================================================
+DOXYFILE_ENCODING      = UTF-8
+OUTPUT_LANGUAGE        = Spanish

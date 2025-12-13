@@ -4,11 +4,18 @@ NodoBPlusBase::NodoBPlusBase(int _orden, bool _hoja)
     : claves(0), orden(_orden), num_claves(0), hoja(_hoja) {
     if (orden > 0) {
         claves = new int[orden];
+        // Inicializar claves a cero para evitar basura en memoria
+        for (int i = 0; i < orden; ++i) {
+            claves[i] = 0;
+        }
     }
 }
 
 NodoBPlusBase::~NodoBPlusBase() {
-    delete[] claves;
+    if (claves != 0) { // Seguridad: verificar antes de liberar
+        delete[] claves;
+        claves = 0;
+    }
 }
 
 int NodoBPlusBase::obtener_orden() const {

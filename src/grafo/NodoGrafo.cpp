@@ -31,11 +31,13 @@ int NodoGrafo::cantidad_padres() const {
 
 void NodoGrafo::agregar_padre(int id_padre) {
     int* nuevo = new int[num_padres + 1];
-    for (int i = 0; i < num_padres; ++i) {
-        nuevo[i] = padres[i];
+    if (padres != 0) { // Evitar copiar desde puntero nulo
+        for (int i = 0; i < num_padres; ++i) {
+            nuevo[i] = padres[i];
+        }
+        delete[] padres;
     }
     nuevo[num_padres] = id_padre;
-    delete[] padres;
     padres = nuevo;
     num_padres += 1;
 }
