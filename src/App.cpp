@@ -169,11 +169,61 @@ void opcion_listar_contenido(Sistema& sistema) {
 }
 
 void opcion_obtener_rutas(Sistema& sistema) {
-    cout << "Obtener rutas completas de archivo" << endl;
+    cout << "ID del archivo: ";
+    int id_archivo;
+    if (!(cin >> id_archivo)) {
+        cin.clear();
+        cin.ignore(10000, '\n');
+        cout << "Entrada invalida" << endl;
+        return;
+    }
+
+    NodoGrafo* n = sistema.buscar_nodo_grafo(id_archivo);
+    if (n == 0) {
+        cout << "Archivo no encontrado" << endl;
+        return;
+    }
+    if (n->es_directorio()) {
+        cout << "El ID corresponde a un directorio" << endl;
+        return;
+    }
+
+    char** rutas = sistema.obtener_rutas_completas(id_archivo);
+    if (rutas == 0) {
+        cout << "Sin rutas" << endl;
+        return;
+    }
+
+    cout << "Rutas completas:" << endl;
+    for (int i = 0; rutas[i] != 0; ++i) {
+        cout << "- " << rutas[i] << endl;
+        delete[] rutas[i];
+    }
+    delete[] rutas;
 }
 
 void opcion_calcular_espacio(Sistema& sistema) {
-    cout << "Calcular espacio ocupado del directorio" << endl;
+    cout << "ID del directorio: ";
+    int id_dir;
+    if (!(cin >> id_dir)) {
+        cin.clear();
+        cin.ignore(10000, '\n');
+        cout << "Entrada invalida" << endl;
+        return;
+    }
+
+    NodoGrafo* n = sistema.buscar_nodo_grafo(id_dir);
+    if (n == 0) {
+        cout << "Directorio no encontrado" << endl;
+        return;
+    }
+    if (!n->es_directorio()) {
+        cout << "El ID no es un directorio" << endl;
+        return;
+    }
+
+    int total = sistema.calcular_espacio_ocupado(id_dir);
+    cout << "Espacio total: " << total << endl;
 }
 
 int main() {
